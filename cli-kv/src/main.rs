@@ -1,8 +1,8 @@
 use std::io::{self,Write};
 
 fn main(){
-    println!("Simple Rust KV store");
-    println!("Type exit to close the program");
+    println!("Simple Rust KV Store CLI");
+    println!("Type EXIT to close the program");
 
     loop{
         print!("kv> ");
@@ -30,7 +30,18 @@ fn main(){
     if input.eq_ignore_ascii_case("EXIT"){
         println!("Goodbye");
         break;
-    }   
+    }
+    
+    if input.eq_ignore_ascii_case("HELP"){
+        println!("SET key value \n
+                GET key \n
+                DELETE key\n
+                EXISTS key\n
+                COUNT\n
+                CLEAR\n
+                EXIT")
+
+    }
 
     println!("You entered:{}",input);
     }
