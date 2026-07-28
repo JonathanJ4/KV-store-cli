@@ -1,9 +1,16 @@
+use std::collections::HashMap;
+use std::hash::Hash;
 use std::io::{self,Write};
+
+
+
 
 fn main(){
     println!("Simple Rust KV Store CLI");
     println!("Type EXIT to close the program");
 
+
+    let mut store:HashMap<String,String>= HashMap::new();
     loop{
         print!("kv> ");
     
@@ -33,14 +40,14 @@ fn main(){
     }
     
     if input.eq_ignore_ascii_case("HELP"){
-        println!("SET key value \n
-                GET key \n
-                DELETE key\n
-                EXISTS key\n
-                COUNT\n
-                CLEAR\n
-                EXIT")
-
+        println!("SET key value 
+                GET key 
+                DELETE key
+                EXISTS key
+                COUNT
+                CLEAR
+                EXIT");
+                continue;
     }
 
     println!("You entered:{}",input);
