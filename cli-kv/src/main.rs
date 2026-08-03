@@ -50,6 +50,15 @@ fn main(){
                 continue;
     }
 
+
+    let parts: Vec<&str> = input.split_whitespace().collect();
+
+    //if parts.len()<3{
+        println!("Number of parts: {}",parts.len());
+        println!("Command: {} {} {}",parts[0],parts[1],parts[2]);
+
+    //}
+
     println!("You entered:{}",input);
     }
 }
