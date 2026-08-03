@@ -53,12 +53,20 @@ fn main(){
 
     let parts: Vec<&str> = input.split_whitespace().collect();
 
-    //if parts.len()<3{
-        println!("Number of parts: {}",parts.len());
-        println!("Command: {}",parts[0]);
+    if parts[0].eq_ignore_ascii_case("SET"){
+        if parts.len()!=3{
+            println!("To Use set function: Set Key Value");
+            continue;
+        }
+        let key = parts[1].to_string();
+        let val = parts[2].to_string();
 
-    //}
+        store.insert(key, val);
 
-    //println!("You entered:{}",input);
+        print!("OK Done!");
+        continue;
+    }
+
+    println!("You entered:{}",input);
     }
 }
