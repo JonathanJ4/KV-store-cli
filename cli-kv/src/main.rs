@@ -55,10 +55,10 @@ fn main(){
 
     //if parts.len()<3{
         println!("Number of parts: {}",parts.len());
-        println!("Command: {} {} {}",parts[0],parts[1],parts[2]);
+        println!("Command: {}",parts[0]);
 
     //}
 
-    println!("You entered:{}",input);
+    //println!("You entered:{}",input);
     }
 }
