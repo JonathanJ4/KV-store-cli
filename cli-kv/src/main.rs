@@ -55,7 +55,7 @@ fn main(){
 
     if parts[0].eq_ignore_ascii_case("SET"){
         if parts.len()!=3{
-            println!("To Use set function: Set Key Value");
+            println!("To Use set function follow this format: Set Key Value");
             continue;
         }
         let key = parts[1].to_string();
@@ -63,7 +63,7 @@ fn main(){
 
         store.insert(key, val);
 
-        print!("OK Done!");
+        println!("OK Done!");
         continue;
     }
 
