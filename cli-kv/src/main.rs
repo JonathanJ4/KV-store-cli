@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use std::hash::Hash;
+
 use std::io::{self,Write};
 
 
@@ -51,8 +51,14 @@ fn main(){
     }
 
 
+    
+    
+    
     let parts: Vec<&str> = input.split_whitespace().collect();
-
+    
+    
+    //Set
+    
     if parts[0].eq_ignore_ascii_case("SET"){
         if parts.len()!=3{
             println!("To Use set function follow this format: Set Key Value");
@@ -65,6 +71,24 @@ fn main(){
 
         println!("OK Done!");
         continue;
+    }
+
+    
+    //Get 
+
+    if parts[0].eq_ignore_ascii_case("Get"){
+        if parts.len()!=2{
+            println!("To use the Get function follow this format: Get Key");
+            continue;
+        }
+
+        match store.get(parts[1]){
+            Some(value) => println!("Found:{}",value),
+            None => println!("Key does not exist"),
+
+        }
+    continue;
+
     }
 
     println!("You entered:{}",input);
