@@ -91,6 +91,27 @@ fn main(){
 
     }
 
+
+    //Exists
+    if parts[0].eq_ignore_ascii_case("EXISTS") {
+
+    if  parts.len()!=2{
+        println!("To use the Exists function use this format : EXISTS key");
+        continue;
+    }
+    
+
+
+    let key = parts[1];
+    let exists = store.contains_key(key);
+
+    println!("{exists}");
+
+    continue;
+
+}
+
+
     println!("You entered:{}",input);
     }
 }
