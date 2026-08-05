@@ -115,7 +115,7 @@ fn main(){
     }
 
     match store.remove(parts[1]){
-        Some(value) => println!("Key: {} removed", value),
+        Some(_) => println!("Ok removed"),
         None => println!("Key does not exist")
 
     }
@@ -132,9 +132,7 @@ fn main(){
         continue;
     }
 
-    let count = store.len();
-
-    println!("{count}");
+    
 
     continue;
 }
@@ -165,4 +163,13 @@ fn print_help(){
                 EXIT");
                 
     }
+
+fn handle_count(store: &HashMap<String,String>){
+
+    let count = store.len();
+
+    println!("{count}");
+    
+}
+
 
