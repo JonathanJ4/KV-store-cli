@@ -40,13 +40,7 @@ fn main(){
     }
     
     if input.eq_ignore_ascii_case("HELP"){
-        println!("SET key value 
-                GET key 
-                DELETE key
-                EXISTS key
-                COUNT
-                CLEAR
-                EXIT");
+                print_help();
                 continue;
     }
 
@@ -159,3 +153,16 @@ fn main(){
     println!("Unkown command. Type Help for available commands.");
     }
 }
+
+
+fn print_help(){
+      println!("SET key value 
+                GET key 
+                DELETE key
+                EXISTS key
+                COUNT
+                CLEAR
+                EXIT");
+                
+    }
+
