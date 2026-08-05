@@ -130,6 +130,22 @@ fn main(){
 }
 
 
+    //Count 
+    if parts[0].eq_ignore_ascii_case("COUNT") {
+
+    if input.len()!=1 {
+        println!("To use the count function the format is: COUNT");
+        continue;
+    }
+
+    let count = store.len();
+
+    println!("{count}");
+
+    continue;
+}
+
+
     println!("You entered:{}",input);
     }
 }
