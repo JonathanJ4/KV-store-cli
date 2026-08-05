@@ -131,7 +131,7 @@ fn main(){
         println!("To use the count function the format is: COUNT");
         continue;
     }
-
+    handle_count(&store);
     
 
     continue;
