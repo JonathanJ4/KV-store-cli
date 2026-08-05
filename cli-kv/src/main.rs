@@ -143,8 +143,7 @@ fn main(){
         continue;
     }
 
-    store.clear();
-    println!("OK");
+    handle_clear(&mut store);
     continue;
 }
 
@@ -170,6 +169,11 @@ fn handle_count(store: &HashMap<String,String>){
 
     println!("{count}");
     
+}
+
+fn handle_clear(store: &mut HashMap<String,String>){
+        store.clear();
+        println!("OK");
 }
 
 
