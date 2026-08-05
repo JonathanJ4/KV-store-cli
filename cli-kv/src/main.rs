@@ -144,7 +144,17 @@ fn main(){
 
     continue;
 }
+    //Clear 
+    if parts[0].eq_ignore_ascii_case("CLEAR") {
+    if parts.len()!=1 {
+        println!("To use the Clear function the format is: Clear");
+        continue;
+    }
 
+    store.clear();
+    println!("OK");
+    continue;
+}
 
     println!("You entered:{}",input);
     }
