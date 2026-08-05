@@ -112,6 +112,24 @@ fn main(){
 }
 
 
+    //Delete 
+    if parts[0].eq_ignore_ascii_case("Delete") {
+
+    if  parts.len()!=2{
+        println!("To use the Delete function use this format : Delete key");
+        continue;
+    }
+
+    match store.remove(parts[1]){
+        Some(value) => println!("Key: {} removed", value),
+        None => println!("Key does not exist")
+
+    }
+    continue;
+
+}
+
+
     println!("You entered:{}",input);
     }
 }
