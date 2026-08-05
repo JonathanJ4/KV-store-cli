@@ -156,6 +156,6 @@ fn main(){
     continue;
 }
 
-    println!("You entered:{}",input);
+    println!("Unkown command. Type Help for available commands.");
     }
 }
