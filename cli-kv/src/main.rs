@@ -76,12 +76,8 @@ fn main(){
             continue;
         }
 
-        match store.get(parts[1]){
-            Some(value) => println!("Found:{}",value),
-            None => println!("Key does not exist"),
-
-        }
-    continue;
+        handle_get(&store, parts[1]);
+        continue;
 
     }
 
@@ -174,6 +170,17 @@ fn handle_count(store: &HashMap<String,String>){
 fn handle_clear(store: &mut HashMap<String,String>){
         store.clear();
         println!("OK");
+}
+
+fn handle_get(store: &HashMap<String,String>, key: &str){
+
+    match store.get(key){
+            Some(value) => println!("Found:{}",value),
+            None => println!("Key does not exist"),
+
+        }
+
+        
 }
 
 
