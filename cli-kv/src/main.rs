@@ -92,10 +92,7 @@ fn main(){
     
 
 
-    let key = parts[1];
-    let exists = store.contains_key(key);
-
-    println!("{exists}");
+    hand_exists(key);
 
     continue;
 
@@ -110,11 +107,7 @@ fn main(){
         continue;
     }
 
-    match store.remove(parts[1]){
-        Some(_) => println!("Ok removed"),
-        None => println!("Key does not exist")
-
-    }
+    handle_delete(&store, parts[1]);
     continue;
 
 }
@@ -180,7 +173,15 @@ fn handle_get(store: &HashMap<String,String>, key: &str){
 
         }
 
-        
+}
+
+fn handle_delete(store: &HashMap<String,String>, key: &str){
+match store.remove(key){
+        Some(_) => println!("Ok removed"),
+        None => println!("Key does not exist")
+
+    }
+
 }
 
 
