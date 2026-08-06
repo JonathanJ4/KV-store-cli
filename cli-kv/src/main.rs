@@ -61,9 +61,7 @@ fn main(){
         let key = parts[1].to_string();
         let val = parts[2].to_string();
 
-        store.insert(key, val);
-
-        println!("OK Done!");
+        handle_set(&mut store, &key, &val);
         continue;
     }
 
@@ -192,4 +190,8 @@ fn handle_exists(store: &HashMap<String,String>, key :&str){
 
 }
 
+fn handle_set(store: &mut HashMap<String, String>,key: &str,value: &str,) {
+    store.insert(key.to_string(), value.to_string());
+    println!("OK");
+}
 
