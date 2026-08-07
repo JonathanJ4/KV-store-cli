@@ -155,3 +155,16 @@ fn handle_set(store: &mut HashMap<String, String>, key: &str, value: &str) {
     store.insert(key.to_string(), value.to_string());
     println!("OK");
 }
+
+
+enum Command{
+    Set(String, String),
+    Get(String),
+    Delete(String),
+    Exists(String),
+    Count,
+    Clear,
+    Help,
+    Exit,
+
+}
