@@ -107,21 +107,36 @@ fn handle_set(store: &mut HashMap<String, String>, key: &str, value: &str) {
 
 
 fn parse_command(parts: &[&str]) -> Option<Command>{
-    match parts{
-        ["Get", key] => Some(Command::Get(key.to_string())),
-        ["SET", key, value] => {
-            Some(Command::Set(key.to_string(), value.to_string()))
-        }
-        ["DELETE", key] => Some(Command::Delete(key.to_string())),
-        ["EXISTS", key] => Some(Command::Exists(key.to_string())),
-        ["COUNT"] => Some(Command::Count),
-        ["CLEAR"] => Some(Command::Clear),
-        ["EXIT"] => Some(Command::Exit),
-        ["HELP"] => Some(Command::Help),
-        _ => None,
 
+    if parts.is_empty() {
+        return None;
     }
 
+    let command = parts[0].to_ascii_uppercase();
+
+    match (command.as_str(), parts) {
+        ("GET", [_, key]) => {
+            Some(Command::Get(key.to_string()))
+        }
+        ("SET", [_, key, value]) => {
+            Some(Command::Set(key.to_string(),value.to_string(),))
+        }
+
+        ("DELETE", [_, key]) => {
+            Some(Command::Delete(key.to_string()))
+        }
+
+        ("EXISTS", [_, key]) => {
+            Some(Command::Exists(key.to_string()))
+        }
+
+        ("COUNT", [_]) => Some(Command::Count),
+        ("CLEAR", [_]) => Some(Command::Clear),
+        ("HELP", [_]) => Some(Command::Help),
+        ("EXIT", [_]) => Some(Command::Exit),
+
+        _ => None,
+    }
 
     
 }
