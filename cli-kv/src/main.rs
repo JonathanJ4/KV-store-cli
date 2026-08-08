@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use std::collections::btree_map::Keys;
 use std::io::{self, Write};
 
 enum Command{
@@ -43,17 +42,18 @@ fn main() {
         let command = match parse_command(&parts) {
             Some(command) => command,
             None => {
-        println!("Invalid command");
+        println!("Unkown command. Type Help for available commands.");
         continue;
     }
 };
-        handle_commands(&mut store,command);
+        if !handle_commands(&mut store,command){
+            break;
+        }
 
         
 
         
 
-        println!("Unkown command. Type Help for available commands.");
     }
 }
 
@@ -127,41 +127,47 @@ fn parse_command(parts: &[&str]) -> Option<Command>{
 }
 
 
-fn handle_commands(store: &mut HashMap<String,String>, command: Command){
+fn handle_commands(store: &mut HashMap<String,String>, command: Command) -> bool{
 match command {
             Command::Set(key, value) => {
                 handle_set(store, &key, &value);
+                true
             }
 
             Command::Get(key) => {
                 handle_get(&store, &key);
+                true
             }
 
             Command::Count => {
                 handle_count(&store);
+                true
             }
 
             Command::Clear => {
                 handle_clear( store);
+                true
             }
 
             Command::Delete(key) => {
                 handle_delete(store, &key);
+                true
             }
 
             Command::Exists(key) => {
                 handle_exists(store, &key);
-
+                true
             }
 
 
             Command::Exit => {
                 println!("Goodbye");
-        
+                false
             }
 
             Command::Help =>{ 
                 print_help();
+                true
             }
         }
     }
