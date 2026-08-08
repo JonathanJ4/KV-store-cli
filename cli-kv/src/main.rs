@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use std::collections::btree_map::Keys;
 use std::io::{self, Write};
 
 enum Command{
@@ -36,89 +37,18 @@ fn main() {
             continue;
         }
 
-        if input.eq_ignore_ascii_case("EXIT") {
-            println!("Goodbye");
-            break;
-        }
-
-        if input.eq_ignore_ascii_case("HELP") {
-            print_help();
-            continue;
-        }
-
         let parts: Vec<&str> = input.split_whitespace().collect();
+
         
-        handle_commands();
+        let command = match parse_command(&parts) {
+            Some(command) => command,
+            None => {
+        println!("Invalid command");
+        continue;
+    }
+};
+        handle_commands(&mut store,command);
 
-        //Set
-
-        if parts[0].eq_ignore_ascii_case("SET") {
-            if parts.len() != 3 {
-                println!("To Use set function follow this format: Set Key Value");
-                continue;
-            }
-            let key = parts[1].to_string();
-            let val = parts[2].to_string();
-
-            handle_set(&mut store, &key, &val);
-            continue;
-        }
-
-        //Get
-
-        if parts[0].eq_ignore_ascii_case("Get") {
-            if parts.len() != 2 {
-                println!("To use the Get function follow this format: Get Key");
-                continue;
-            }
-
-            handle_get(&store, parts[1]);
-            continue;
-        }
-
-        //Exists
-        if parts[0].eq_ignore_ascii_case("EXISTS") {
-            if parts.len() != 2 {
-                println!("To use the Exists function use this format : EXISTS key");
-                continue;
-            }
-
-            handle_exists(&store, parts[1]);
-
-            continue;
-        }
-
-        //Delete
-        if parts[0].eq_ignore_ascii_case("Delete") {
-            if parts.len() != 2 {
-                println!("To use the Delete function use this format : Delete key");
-                continue;
-            }
-
-            handle_delete(&mut store, parts[1]);
-            continue;
-        }
-
-        //Count
-        if parts[0].eq_ignore_ascii_case("COUNT") {
-            if parts.len() != 1 {
-                println!("To use the count function the format is: COUNT");
-                continue;
-            }
-            handle_count(&store);
-
-            continue;
-        }
-        //Clear
-        if parts[0].eq_ignore_ascii_case("CLEAR") {
-            if parts.len() != 1 {
-                println!("To use the Clear function the format is: Clear");
-                continue;
-            }
-
-            handle_clear(&mut store);
-            continue;
-        }
         
 
         
@@ -187,22 +117,20 @@ fn parse_command(parts: &[&str]) -> Option<Command>{
         ["COUNT"] => Some(Command::Count),
         ["CLEAR"] => Some(Command::Clear),
         ["EXIT"] => Some(Command::Exit),
-        
-
-
+        ["HELP"] => Some(Command::Help),
         _ => None,
 
     }
 
 
-
     
 }
 
-fn handle_commands(){
+
+fn handle_commands(store: &mut HashMap<String,String>, command: Command){
 match command {
             Command::Set(key, value) => {
-                handle_set(&mut store, &key, &value);
+                handle_set(store, &key, &value);
             }
 
             Command::Get(key) => {
@@ -214,7 +142,26 @@ match command {
             }
 
             Command::Clear => {
-                handle_clear(&mut store);
+                handle_clear( store);
+            }
+
+            Command::Delete(key) => {
+                handle_delete(store, &key);
+            }
+
+            Command::Exists(key) => {
+                handle_exists(store, &key);
+
+            }
+
+
+            Command::Exit => {
+                println!("Goodbye");
+        
+            }
+
+            Command::Help =>{ 
+                print_help();
             }
         }
     }
