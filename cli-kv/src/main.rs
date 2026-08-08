@@ -2,6 +2,20 @@ use std::collections::HashMap;
 
 use std::io::{self, Write};
 
+enum Command{
+    Set(String, String),
+    Get(String),
+    Delete(String),
+    Exists(String),
+    Count,
+    Clear,
+    Help,
+    Exit,
+
+}
+
+
+
 fn main() {
     println!("Simple Rust KV Store CLI");
     println!("Type EXIT to close the program");
@@ -33,6 +47,8 @@ fn main() {
         }
 
         let parts: Vec<&str> = input.split_whitespace().collect();
+        
+        handle_commands();
 
         //Set
 
@@ -103,6 +119,9 @@ fn main() {
             handle_clear(&mut store);
             continue;
         }
+        
+
+        
 
         println!("Unkown command. Type Help for available commands.");
     }
@@ -156,15 +175,22 @@ fn handle_set(store: &mut HashMap<String, String>, key: &str, value: &str) {
     println!("OK");
 }
 
+fn handle_commands(){
+match command {
+            Command::Set(key, value) => {
+                handle_set(&mut store, &key, &value);
+            }
 
-enum Command{
-    Set(String, String),
-    Get(String),
-    Delete(String),
-    Exists(String),
-    Count,
-    Clear,
-    Help,
-    Exit,
+            Command::Get(key) => {
+                handle_get(&store, &key);
+            }
 
-}
+            Command::Count => {
+                handle_count(&store);
+            }
+
+            Command::Clear => {
+                handle_clear(&mut store);
+            }
+        }
+    }
