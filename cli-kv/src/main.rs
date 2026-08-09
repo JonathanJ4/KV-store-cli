@@ -14,13 +14,37 @@ enum Command{
 
 }
 
+struct Store{
+    data:HashMap<String,String>
+
+}
+
+impl Store{
+    fn new() -> Self{
+        Self{
+            data:HashMap::new()
+        }
+    }
+    fn count(&self) -> usize {
+        self.data.len()
+    }
+    fn clear(&mut self) {
+        self.data.clear();
+    }
+    fn get(&self, key:&str) -> Option<&String>{
+        self.data.get(key)
+
+    }
+}
+
+
 
 
 fn main() {
     println!("Simple Rust KV Store CLI");
     println!("Type EXIT to close the program");
 
-    let mut store: HashMap<String, String> = HashMap::new();
+    let mut store= Store::new();
     loop {
         print!("kv> ");
 
