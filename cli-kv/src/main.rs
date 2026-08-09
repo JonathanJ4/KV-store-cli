@@ -33,6 +33,18 @@ impl Store{
     }
     fn get(&self, key:&str) -> Option<&String>{
         self.data.get(key)
+    }
+
+    fn set(&mut self, key: &str, val: &str){
+        self.data.insert(key.to_string(), val.to_string());
+    }
+    
+    fn delete(&mut self, key: &str) -> Option<String>{
+        self.data.remove(key)
+
+    }
+    fn exsits(&self, key: &str)->bool{
+        self.data.contains_key(key)
 
     }
 }
@@ -70,7 +82,7 @@ fn main() {
         continue;
     }
 };
-        if !handle_commands(&mut store,command){
+        if !handle_commands(Store,command){
             break;
         }
 
@@ -93,39 +105,38 @@ fn print_help() {
     );
 }
 
-fn handle_count(store: &HashMap<String, String>) {
-    let count = store.len();
+fn handle_count(store: &Store) {
+    let count = store.count();
 
     println!("{count}");
 }
 
-fn handle_clear(store: &mut HashMap<String, String>) {
+fn handle_clear(store: &mut Store) {
     store.clear();
     println!("OK");
 }
 
-fn handle_get(store: &HashMap<String, String>, key: &str) {
+fn handle_get(store: &Store, key: &str) {
     match store.get(key) {
         Some(value) => println!("Found:{}", value),
         None => println!("Key does not exist"),
     }
 }
 
-fn handle_delete(store: &mut HashMap<String, String>, key: &str) {
-    match store.remove(key) {
+fn handle_delete(store: &mut Store, key: &str) {
+    match store.delete(key) {
         Some(_) => println!("Ok removed"),
         None => println!("Key does not exist"),
     }
 }
 
-fn handle_exists(store: &HashMap<String, String>, key: &str) {
-    let exists = store.contains_key(key);
-
-    println!("{exists}");
+fn handle_exists(store: &Store, key: &str) {
+    let exist = store.exsits(key);
+    println!("{}",exist);
 }
 
-fn handle_set(store: &mut HashMap<String, String>, key: &str, value: &str) {
-    store.insert(key.to_string(), value.to_string());
+fn handle_set(store: &mut Store, key: &str, value: &str) {
+    store.set(key, value);
     println!("OK");
 }
 
@@ -166,7 +177,7 @@ fn parse_command(parts: &[&str]) -> Option<Command>{
 }
 
 
-fn handle_commands(store: &mut HashMap<String,String>, command: Command) -> bool{
+fn handle_commands(store: &mut Store, command: Command) -> bool{
 match command {
             Command::Set(key, value) => {
                 handle_set(store, &key, &value);
@@ -174,17 +185,17 @@ match command {
             }
 
             Command::Get(key) => {
-                handle_get(&store, &key);
+                handle_get(store, &key);
                 true
             }
 
             Command::Count => {
-                handle_count(&store);
+                handle_count(store);
                 true
             }
 
             Command::Clear => {
-                handle_clear( store);
+                handle_clear(store);
                 true
             }
 
