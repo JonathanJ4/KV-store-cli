@@ -43,7 +43,7 @@ impl Store{
         self.data.remove(key)
 
     }
-    fn exsits(&self, key: &str)->bool{
+    fn exists(&self, key: &str)->bool{
         self.data.contains_key(key)
 
     }
@@ -82,7 +82,7 @@ fn main() {
         continue;
     }
 };
-        if !handle_commands(Store,command){
+        if !handle_commands(&mut store,command){
             break;
         }
 
@@ -131,7 +131,7 @@ fn handle_delete(store: &mut Store, key: &str) {
 }
 
 fn handle_exists(store: &Store, key: &str) {
-    let exist = store.exsits(key);
+    let exist = store.exists(key);
     println!("{}",exist);
 }
 
