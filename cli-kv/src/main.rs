@@ -14,6 +14,11 @@ enum Command{
 
 }
 
+enum ParseError {
+    UnknownCommand,
+    InvalidArguments,
+}
+
 struct Store{
     data:HashMap<String,String>
 
@@ -60,11 +65,15 @@ fn main() {
     loop {
         print!("kv> ");
 
-        io::stdout().flush().expect("Failed to flush stdout");
+        io::stdout()
+        .flush()
+        .expect("Failed to flush stdout");
 
         let mut input = String::new();
 
-        io::stdin().read_line(&mut input).expect("Failed to read");
+        io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read");
 
         let input = input.trim();
 
@@ -106,10 +115,12 @@ fn print_help() {
 }
 
 
-fn parse_command(parts: &[&str]) -> Option<Command>{
+fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
 
     if parts.is_empty() {
-        return None;
+        print!("Empty");
+        return Err(ParseError::InvalidArguments);
+        
     }
 
     let command = parts[0].to_ascii_uppercase();
