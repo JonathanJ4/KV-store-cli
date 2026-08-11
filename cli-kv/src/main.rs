@@ -2,6 +2,8 @@ use std::collections::HashMap;
 
 use std::io::{self, Write};
 
+use crate::ParseError::{InvalidArguments, UnknownCommand};
+
 enum Command{
     Set(String, String),
     Get(String),
@@ -85,8 +87,8 @@ fn main() {
 
         
         let command = match parse_command(&parts) {
-            Some(command) => command,
-            None => {
+            Ok(command) => command,
+            _ => {
         println!("Unkown command. Type Help for available commands.");
         continue;
     }
@@ -127,28 +129,59 @@ fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
     let key = parts[1];
     let value = parts[2];
 
-    match (command.as_str()) {
+    match command.as_str(){
         "GET" => {
+            if parts.len() !=2{
+                return Err(ParseError::InvalidArguments)
+            }
             Ok(Command::Get(key.to_string()))
         }
         "SET" => {
+            if parts.len() !=3{
+                return Err(ParseError::InvalidArguments)
+            }
             Ok(Command::Set(key.to_string(),value.to_string(),))
         }
 
         "DELETE" => {
+            if parts.len() !=2{
+                return Err(ParseError::InvalidArguments)
+            }
             Ok(Command::Delete(key.to_string()))
         }
 
         "EXISTS" => {
+            if parts.len() !=2{
+                return Err(ParseError::InvalidArguments)
+            }
             Ok(Command::Exists(key.to_string()))
         }
 
-        "COUNT" => Ok(Command::Count),
-        "CLEAR" => Ok(Command::Clear),
-        "HELP" => Ok(Command::Help),
-        "EXIT" => Ok(Command::Exit),
+        "COUNT" => {
+            if parts.len() !=1{
+                return Err(ParseError::InvalidArguments)
+            }
+            Ok(Command::Count)}
 
-        _ => None,
+        "CLEAR" => {
+            if parts.len() !=1{
+                return Err(ParseError::InvalidArguments)
+            }
+            Ok(Command::Clear)}
+
+        "HELP" => {
+            if parts.len() !=1{
+                return Err(ParseError::InvalidArguments)
+            }
+            Ok(Command::Help)}
+
+        "EXIT" => {
+            if parts.len() !=1{
+                return Err(ParseError::InvalidArguments)
+            }
+            Ok(Command::Exit)}
+
+        _ => Err(ParseError::UnknownCommand),
     }
 
     
