@@ -105,23 +105,6 @@ fn print_help() {
     );
 }
 
-fn handle_count(store: &Store) {
-    let count = store.count();
-
-    println!("{count}");
-}
-
-fn handle_clear(store: &mut Store) {
-    store.clear();
-    println!("OK");
-}
-
-
-
-
-
-
-
 
 fn parse_command(parts: &[&str]) -> Option<Command>{
 
@@ -176,12 +159,14 @@ match command {
             }
 
             Command::Count => {
-                handle_count(store);
+                let count = store.count();
+                println!("{count}");
                 true
             }
 
             Command::Clear => {
-                handle_clear(store);
+                store.clear();
+                println!("OK");
                 true
             }
 
