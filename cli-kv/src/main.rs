@@ -124,27 +124,29 @@ fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
     }
 
     let command = parts[0].to_ascii_uppercase();
+    let key = parts[1];
+    let value = parts[2];
 
-    match (command.as_str(), parts) {
-        ("GET", [_, key]) => {
+    match (command.as_str()) {
+        "GET" => {
             Ok(Command::Get(key.to_string()))
         }
-        ("SET", [_, key, value]) => {
+        "SET" => {
             Ok(Command::Set(key.to_string(),value.to_string(),))
         }
 
-        ("DELETE", [_, key]) => {
+        "DELETE" => {
             Ok(Command::Delete(key.to_string()))
         }
 
-        ("EXISTS", [_, key]) => {
+        "EXISTS" => {
             Ok(Command::Exists(key.to_string()))
         }
 
-        ("COUNT", [_]) => Ok(Command::Count),
-        ("CLEAR", [_]) => Ok(Command::Clear),
-        ("HELP", [_]) => Ok(Command::Help),
-        ("EXIT", [_]) => Ok(Command::Exit),
+        "COUNT" => Ok(Command::Count),
+        "CLEAR" => Ok(Command::Clear),
+        "HELP" => Ok(Command::Help),
+        "EXIT" => Ok(Command::Exit),
 
         _ => None,
     }
