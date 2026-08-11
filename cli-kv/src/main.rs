@@ -127,24 +127,24 @@ fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
 
     match (command.as_str(), parts) {
         ("GET", [_, key]) => {
-            Some(Command::Get(key.to_string()))
+            Ok(Command::Get(key.to_string()))
         }
         ("SET", [_, key, value]) => {
-            Some(Command::Set(key.to_string(),value.to_string(),))
+            Ok(Command::Set(key.to_string(),value.to_string(),))
         }
 
         ("DELETE", [_, key]) => {
-            Some(Command::Delete(key.to_string()))
+            Ok(Command::Delete(key.to_string()))
         }
 
         ("EXISTS", [_, key]) => {
-            Some(Command::Exists(key.to_string()))
+            Ok(Command::Exists(key.to_string()))
         }
 
-        ("COUNT", [_]) => Some(Command::Count),
-        ("CLEAR", [_]) => Some(Command::Clear),
-        ("HELP", [_]) => Some(Command::Help),
-        ("EXIT", [_]) => Some(Command::Exit),
+        ("COUNT", [_]) => Ok(Command::Count),
+        ("CLEAR", [_]) => Ok(Command::Clear),
+        ("HELP", [_]) => Ok(Command::Help),
+        ("EXIT", [_]) => Ok(Command::Exit),
 
         _ => None,
     }
