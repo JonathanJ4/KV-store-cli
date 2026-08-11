@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use std::io::{self, Write};
 
-use crate::ParseError::{InvalidArguments, UnknownCommand};
+
 
 enum Command{
     Set(String, String),
@@ -246,3 +246,16 @@ match command {
             }
         }
     }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn new_store_is_empty() {
+        let store = Store::new();
+
+        assert_eq!(store.count(), 0);
+    }
+}
