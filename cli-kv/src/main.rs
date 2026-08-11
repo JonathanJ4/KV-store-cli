@@ -88,11 +88,16 @@ fn main() {
         
         let command = match parse_command(&parts) {
             Ok(command) => command,
-            _ => {
-        println!("Unkown command. Type Help for available commands.");
+            Err(ParseError::UnknownCommand) => {
+        println!("Unknown command. Type HELP for available commands.");
         continue;
     }
-};
+
+    Err(ParseError::InvalidArguments) => {
+        println!("Invalid arguments.");
+        continue;
+        }
+    };
         if !handle_commands(&mut store,command){
             break;
         }
@@ -126,35 +131,34 @@ fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
     }
 
     let command = parts[0].to_ascii_uppercase();
-    let key = parts[1];
-    let value = parts[2];
+  
 
     match command.as_str(){
         "GET" => {
             if parts.len() !=2{
                 return Err(ParseError::InvalidArguments)
             }
-            Ok(Command::Get(key.to_string()))
+            Ok(Command::Get(parts[1].to_string()))
         }
         "SET" => {
             if parts.len() !=3{
                 return Err(ParseError::InvalidArguments)
             }
-            Ok(Command::Set(key.to_string(),value.to_string(),))
+            Ok(Command::Set(parts[1].to_string(),parts[2].to_string(),))
         }
 
         "DELETE" => {
             if parts.len() !=2{
                 return Err(ParseError::InvalidArguments)
             }
-            Ok(Command::Delete(key.to_string()))
+            Ok(Command::Delete(parts[1].to_string()))
         }
 
         "EXISTS" => {
             if parts.len() !=2{
                 return Err(ParseError::InvalidArguments)
             }
-            Ok(Command::Exists(key.to_string()))
+            Ok(Command::Exists(parts[1].to_string()))
         }
 
         "COUNT" => {
