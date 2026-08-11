@@ -116,29 +116,11 @@ fn handle_clear(store: &mut Store) {
     println!("OK");
 }
 
-fn handle_get(store: &Store, key: &str) {
-    match store.get(key) {
-        Some(value) => println!("Found:{}", value),
-        None => println!("Key does not exist"),
-    }
-}
 
-fn handle_delete(store: &mut Store, key: &str) {
-    match store.delete(key) {
-        Some(_) => println!("Ok removed"),
-        None => println!("Key does not exist"),
-    }
-}
 
-fn handle_exists(store: &Store, key: &str) {
-    let exist = store.exists(key);
-    println!("{}",exist);
-}
 
-fn handle_set(store: &mut Store, key: &str, value: &str) {
-    store.set(key, value);
-    println!("OK");
-}
+
+
 
 
 fn parse_command(parts: &[&str]) -> Option<Command>{
@@ -180,12 +162,16 @@ fn parse_command(parts: &[&str]) -> Option<Command>{
 fn handle_commands(store: &mut Store, command: Command) -> bool{
 match command {
             Command::Set(key, value) => {
-                handle_set(store, &key, &value);
+                store.set(&key, &value);
+                println!("OK");
                 true
             }
 
             Command::Get(key) => {
-                handle_get(store, &key);
+                match store.get(&key) {
+                Some(value) => println!("Found:{}", value),
+                None => println!("Key does not exist"),
+                    }
                 true
             }
 
@@ -200,12 +186,16 @@ match command {
             }
 
             Command::Delete(key) => {
-                handle_delete(store, &key);
+                match store.delete(&key) {
+                Some(_) => println!("Ok removed"),
+                None => println!("Key does not exist"),
+                }
                 true
             }
 
             Command::Exists(key) => {
-                handle_exists(store, &key);
+                let exist = store.exists(&key);
+                println!("{}",exist);
                 true
             }
 
