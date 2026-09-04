@@ -258,4 +258,21 @@ mod tests {
 
         assert_eq!(store.count(), 0);
     }
-}
+    
+    #[test]
+    fn get_set_store(){
+        let mut store = Store::new();
+
+        store.set("Language", "Rust");
+        
+        match store.get("Language") {
+            Some(value) => {
+                assert_eq!(value,"Rust");
+            }
+            None => {
+                panic!("Expected key to exist")
+            }
+        }
+
+    }
+}   
