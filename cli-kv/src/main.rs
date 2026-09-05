@@ -2,6 +2,9 @@ use std::collections::HashMap;
 
 use std::io::{self, Write};
 
+use std::fs::OpenOptions;
+
+
 
 
 enum Command{
@@ -62,8 +65,20 @@ impl Store{
 fn main() {
     println!("Simple Rust KV Store CLI");
     println!("Type EXIT to close the program");
-
+    
+    let mut file = OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open("store.log")
+            .unwrap();
+    
+    
+    
     let mut store= Store::new();
+
+
+
+
     loop {
         print!("kv> ");
 
@@ -76,12 +91,15 @@ fn main() {
         io::stdin()
         .read_line(&mut input)
         .expect("Failed to read");
-
+        
         let input = input.trim();
 
         if input.is_empty() {
             continue;
         }
+
+        
+
 
         let parts: Vec<&str> = input.split_whitespace().collect();
 
@@ -92,12 +110,15 @@ fn main() {
         println!("Unknown command. Type HELP for available commands.");
         continue;
     }
+    
 
     Err(ParseError::InvalidArguments) => {
         println!("Invalid arguments.");
         continue;
         }
     };
+
+        writeln!(file,"{input}").unwrap();
         if !handle_commands(&mut store,command){
             break;
         }
@@ -258,7 +279,7 @@ mod tests {
 
         assert_eq!(store.count(), 0);
     }
-    
+
     #[test]
     fn get_set_store(){
         let mut store = Store::new();
