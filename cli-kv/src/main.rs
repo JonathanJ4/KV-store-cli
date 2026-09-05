@@ -4,6 +4,7 @@ use std::io::{self, Write};
 
 use std::fs::OpenOptions;
 
+use std::fs::File;
 
 
 
@@ -118,8 +119,8 @@ fn main() {
         }
     };
 
-        writeln!(file,"{input}").unwrap();
-        if !handle_commands(&mut store,command){
+        
+        if !handle_commands(&mut store,command,&mut file ){
             break;
         }
 
@@ -213,10 +214,11 @@ fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
 }
 
 
-fn handle_commands(store: &mut Store, command: Command) -> bool{
+fn handle_commands(store: &mut Store, command: Command, file: &mut File) -> bool{
 match command {
             Command::Set(key, value) => {
                 store.set(&key, &value);
+                writeln!(file,"{} {}", key, value).unwrap();
                 println!("OK");
                 true
             }
