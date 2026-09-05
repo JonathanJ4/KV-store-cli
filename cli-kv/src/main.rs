@@ -246,10 +246,11 @@ match command {
 
             Command::Delete(key) => {
                 match store.delete(&key) {
-                Some(_) => println!("Ok removed"),
+                Some(_) => {writeln!(file,"Delete {}", key).unwrap();
+                            println!("Ok removed");}
                 None => println!("Key does not exist"),
                 }
-                writeln!(file,"Delete {}", key).unwrap();
+                
                 true
             }
 
