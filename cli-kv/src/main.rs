@@ -218,7 +218,7 @@ fn handle_commands(store: &mut Store, command: Command, file: &mut File) -> bool
 match command {
             Command::Set(key, value) => {
                 store.set(&key, &value);
-                writeln!(file,"{} {}", key, value).unwrap();
+                writeln!(file,"SET {} {}", key, value).unwrap();
                 println!("OK");
                 true
             }
@@ -239,6 +239,7 @@ match command {
 
             Command::Clear => {
                 store.clear();
+                writeln!(file,"Clear").unwrap();
                 println!("OK");
                 true
             }
@@ -248,6 +249,7 @@ match command {
                 Some(_) => println!("Ok removed"),
                 None => println!("Key does not exist"),
                 }
+                writeln!(file,"Delete {}", key).unwrap();
                 true
             }
 
