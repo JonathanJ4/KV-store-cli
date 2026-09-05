@@ -1,2 +1,3 @@
 .vscode/settings.json
 cli-kv/target/
+cli-kv/store.log
