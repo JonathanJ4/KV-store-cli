@@ -20,6 +20,7 @@ enum Command{
 
 }
 
+#[derive(Debug)]
 enum ParseError {
     UnknownCommand,
     InvalidArguments,
@@ -79,6 +80,11 @@ fn main() {
             let command = parse_command(&parts).unwrap();
 
         }
+
+    fn apply_command(store: &mut Store, ){
+
+
+    }
 
     
 
