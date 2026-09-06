@@ -73,18 +73,7 @@ fn main() {
 
     let file1 = File::open("store.log").unwrap();
     
-    let reader = BufReader::new(file1);
-    for line in reader.lines(){ 
-            let actual_line =line.unwrap();
-            let parts: Vec<&str> = actual_line.split_whitespace().collect();
-            let command = parse_command(&parts).unwrap();
-
-        }
-
-    fn apply_command(store: &mut Store, ){
-
-
-    }
+    
 
     
 
@@ -99,7 +88,34 @@ fn main() {
     
     
     let mut store= Store::new();
+    let reader = BufReader::new(file1);
+    for line in reader.lines(){ 
+            let actual_line =line.unwrap();
+            let parts: Vec<&str> = actual_line.split_whitespace().collect();
+            let command = parse_command(&parts).unwrap();
+            apply_command(&mut store, &command);
 
+        }
+
+    fn apply_command(store: &mut Store, command: &Command,  ){
+        match command{
+        Command::Set(key, value) => {
+                store.set(&key, &value);
+                
+                
+            }
+         Command::Delete(key) => {
+                store.delete(&key);
+                
+
+            }
+
+        Command::Clear => {
+                store.clear();
+            }
+        _ => {}
+        }
+    }
 
 
 
