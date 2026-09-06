@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
-use std::io::{self, Write};
+
 
 use std::fs::OpenOptions;
 
 use std::fs::File;
-
+use std::io::{self, Write, BufRead, BufReader};
 
 
 enum Command{
@@ -67,6 +67,22 @@ fn main() {
     println!("Simple Rust KV Store CLI");
     println!("Type EXIT to close the program");
     
+
+
+
+    let file1 = File::open("store.log").unwrap();
+    
+    let reader = BufReader::new(file1);
+    for line in reader.lines(){ 
+            let actual_line =line.unwrap();
+            println!("{}", actual_line);
+
+        }
+        
+    
+
+
+
     let mut file = OpenOptions::new()
             .create(true)
             .append(true)
@@ -81,6 +97,10 @@ fn main() {
 
 
     loop {
+
+
+        
+
         print!("kv> ");
 
         io::stdout()
