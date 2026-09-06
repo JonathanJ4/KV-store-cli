@@ -71,7 +71,7 @@ fn main() {
 
 
 
-    let file1 = File::open("store.log").unwrap();
+   
     
     
 
@@ -84,7 +84,7 @@ fn main() {
             .append(true)
             .open("store.log")
             .unwrap();
-    
+     let file1 = File::open("store.log").unwrap();
     
     
     let mut store= Store::new();
