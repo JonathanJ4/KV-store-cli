@@ -75,10 +75,11 @@ fn main() {
     let reader = BufReader::new(file1);
     for line in reader.lines(){ 
             let actual_line =line.unwrap();
-            println!("{}", actual_line);
+            let parts: Vec<&str> = actual_line.split_whitespace().collect();
+            let command = parse_command(&parts).unwrap();
 
         }
-        
+
     
 
 
