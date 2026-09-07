@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 
 
+use std::error;
 use std::fs::OpenOptions;
 
 use std::fs::File;
@@ -92,7 +93,19 @@ fn main() {
     for line in reader.lines(){ 
             let actual_line =line.unwrap();
             let parts: Vec<&str> = actual_line.split_whitespace().collect();
-            let command = parse_command(&parts).unwrap();
+            let command = match parse_command(&parts) {
+            Ok(command) => command,
+            Err(ParseError::UnknownCommand) => {
+            println!("Unknown command. Type HELP for available commands.");
+            continue;
+    }
+    
+
+            Err(ParseError::InvalidArguments) => {
+            println!("Invalid arguments.");
+            continue;
+        }
+    };
             apply_command(&mut store, &command);
 
         }
