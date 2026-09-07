@@ -62,6 +62,25 @@ impl Store{
     }
 }
 
+fn apply_command(store: &mut Store, command: &Command,  ){
+        match command{
+        Command::Set(key, value) => {
+                store.set(&key, &value);
+                
+                
+            }
+         Command::Delete(key) => {
+                store.delete(&key);
+                
+
+            }
+
+        Command::Clear => {
+                store.clear();
+            }
+        _ => {}
+        }
+    }
 
 
 
@@ -110,26 +129,7 @@ fn main() {
 
         }
 
-    fn apply_command(store: &mut Store, command: &Command,  ){
-        match command{
-        Command::Set(key, value) => {
-                store.set(&key, &value);
-                
-                
-            }
-         Command::Delete(key) => {
-                store.delete(&key);
-                
-
-            }
-
-        Command::Clear => {
-                store.clear();
-            }
-        _ => {}
-        }
-    }
-
+    
 
 
     loop {
