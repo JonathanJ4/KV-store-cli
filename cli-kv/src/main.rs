@@ -6,6 +6,7 @@ use std::error;
 use std::fs::OpenOptions;
 
 use std::fs::File;
+use std::io::ErrorKind::NotFound;
 use std::io::{self, Write, BufRead, BufReader};
 
 
@@ -75,6 +76,8 @@ fn main() {
 
     
     load_log(&mut store);
+
+
     let mut file = OpenOptions::new()
             .create(true)
             .append(true)
@@ -143,11 +146,22 @@ fn print_help() {
 }
 
 fn load_log(store: &mut Store){
-    let file1 = File::open("store.log").unwrap();
+    let file1 = match File::open("store.log"){
+
+    Ok(file1) =>{let reader = BufReader::new(file1);}
+    Err(error) =>{
+        let error1 = error.kind();
+        if error1 == NotFound{
+            let mut file = OpenOptions::new()
+            .create(true)
+            .open("store.log")
+            .unwrap();
+        }
+    }   
+    };
     
     
     
-    let reader = BufReader::new(file1);
     for line in reader.lines(){ 
             let actual_line =line.unwrap();
             let parts: Vec<&str> = actual_line.split_whitespace().collect();
