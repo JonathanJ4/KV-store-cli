@@ -70,48 +70,16 @@ fn main() {
     println!("Type EXIT to close the program");
     
 
-
-
-   
-    
-    
+  
+    let mut store= Store::new();
 
     
-
-
-
+    load_log(&mut store);
     let mut file = OpenOptions::new()
             .create(true)
             .append(true)
             .open("store.log")
             .unwrap();
-     let file1 = File::open("store.log").unwrap();
-    
-    
-    let mut store= Store::new();
-    let reader = BufReader::new(file1);
-    for line in reader.lines(){ 
-            let actual_line =line.unwrap();
-            let parts: Vec<&str> = actual_line.split_whitespace().collect();
-            let command = match parse_command(&parts) {
-            Ok(command) => command,
-            Err(ParseError::UnknownCommand) => {
-            println!("Unknown command. Type HELP for available commands.");
-            continue;
-    }
-    
-
-            Err(ParseError::InvalidArguments) => {
-            println!("Invalid arguments.");
-            continue;
-        }
-    };
-            apply_command(&mut store, &command);
-
-        }
-
-    
-
 
     loop {
 
@@ -174,7 +142,37 @@ fn print_help() {
     );
 }
 
+fn load_log(store: &mut Store){
+    let file1 = File::open("store.log").unwrap();
+    
+    
+    
+    let reader = BufReader::new(file1);
+    for line in reader.lines(){ 
+            let actual_line =line.unwrap();
+            let parts: Vec<&str> = actual_line.split_whitespace().collect();
+            let command = match parse_command(&parts) {
+            Ok(command) => command,
+            Err(ParseError::UnknownCommand) => {
+            println!("Unknown command. Type HELP for available commands.");
+            continue;
+    }
+    
 
+            Err(ParseError::InvalidArguments) => {
+            println!("Invalid arguments.");
+            continue;
+        }
+    };
+            apply_command(store, &command);
+
+        }
+
+
+
+
+
+}
 fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
 
     if parts.is_empty() {
