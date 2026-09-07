@@ -147,19 +147,18 @@ fn print_help() {
 
 fn load_log(store: &mut Store){
     let file1 = match File::open("store.log"){
-
-    Ok(file1) =>{let reader = BufReader::new(file1);}
+  
+    Ok(file1) =>file1,
     Err(error) =>{
         let error1 = error.kind();
         if error1 == NotFound{
-            let mut file = OpenOptions::new()
-            .create(true)
-            .open("store.log")
-            .unwrap();
-        }
+            return;
+        }else {
+                panic!("Failed to open log file");
+            }
     }   
     };
-    
+    let reader = BufReader::new(file1);
     
     
     for line in reader.lines(){ 
