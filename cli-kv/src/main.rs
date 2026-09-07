@@ -62,25 +62,6 @@ impl Store{
     }
 }
 
-fn apply_command(store: &mut Store, command: &Command,  ){
-        match command{
-        Command::Set(key, value) => {
-                store.set(&key, &value);
-                
-                
-            }
-         Command::Delete(key) => {
-                store.delete(&key);
-                
-
-            }
-
-        Command::Clear => {
-                store.clear();
-            }
-        _ => {}
-        }
-    }
 
 
 
@@ -163,16 +144,10 @@ fn main() {
         
         let command = match parse_command(&parts) {
             Ok(command) => command,
-            Err(ParseError::UnknownCommand) => {
-        println!("Unknown command. Type HELP for available commands.");
-        continue;
-    }
-    
-
-    Err(ParseError::InvalidArguments) => {
-        println!("Invalid arguments.");
-        continue;
-        }
+            Err(_) => {
+                print!("Garbage");
+                continue;
+            }
     };
 
         
@@ -268,6 +243,26 @@ fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
 
     
 }
+
+fn apply_command(store: &mut Store, command: &Command,  ){
+        match command{
+        Command::Set(key, value) => {
+                store.set(&key, &value);
+                
+                
+            }
+         Command::Delete(key) => {
+                store.delete(&key);
+                
+
+            }
+
+        Command::Clear => {
+                store.clear();
+            }
+        _ => {}
+        }
+    }
 
 
 fn handle_commands(store: &mut Store, command: Command, file: &mut File) -> bool{
