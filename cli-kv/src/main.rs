@@ -177,7 +177,7 @@ fn load_log(store: &mut Store){
             let parts: Vec<&str> = actual_line.split_whitespace().collect();
             match parse_command(&parts) {
             Ok(command) => {apply_command(store, &command);}
-            Err(_) => {print!("Garbage");
+            Err(_) => {print!("Garbage_Command");
                         continue;                }
     };
             
