@@ -167,7 +167,13 @@ fn load_log(store: &mut Store){
     
     
     for line in reader.lines(){ 
-            let actual_line =line.unwrap();
+            let actual_line = match line {
+            Ok(line) => line,
+            Err(_) => {
+            println!("Failed to read log entry");
+            continue;
+        }
+    };
             let parts: Vec<&str> = actual_line.split_whitespace().collect();
             match parse_command(&parts) {
             Ok(command) => {apply_command(store, &command);}
