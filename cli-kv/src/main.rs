@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 
-
+use std::fs::remove_file;
 use std::error;
 use std::fs::OpenOptions;
 
@@ -366,5 +366,24 @@ mod tests {
             }
         }
 
+    }
+    #[test]
+    fn check_recovery_state(){
+    let mut file = OpenOptions::new()
+    .create(true)
+    .write(true)
+    .truncate(true)
+    .open("test.log")
+    .unwrap();
+
+    writeln!(file, "SET language Rust").unwrap();
+    writeln!(file, "SET greeting Hello World").unwrap();
+    drop(file);
+
+
+    let mut store = Store::new();
+
+    load_log(&mut store, "test.log");
+    std::fs::remove_file("test.log").unwrap();
     }
 }   
