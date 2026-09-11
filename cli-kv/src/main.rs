@@ -111,7 +111,7 @@ fn main() {
 
 
         let parts: Vec<&str> = input.split_whitespace().collect();
-
+        
         
         let command = match parse_command(&parts) {
             Ok(command) => command,
@@ -211,7 +211,8 @@ fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
             if parts.len() !=3{
                 return Err(ParseError::InvalidArguments)
             }
-            Ok(Command::Set(parts[1].to_string(),parts[2].to_string(),))
+            let s = parts[2..].join(",");
+            Ok(Command::Set(parts[1].to_string(),s.to_string()))
         }
 
         "DELETE" => {
