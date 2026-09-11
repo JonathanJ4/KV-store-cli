@@ -145,6 +145,11 @@ fn print_help() {
     );
 }
 
+
+/*This is where the recovery happens, so the info from the log file is 
+loaded back into the hashmap and also checks for garbage
+
+*/
 fn load_log(store: &mut Store){
     let file1 = match File::open("store.log"){
   
@@ -164,20 +169,12 @@ fn load_log(store: &mut Store){
     for line in reader.lines(){ 
             let actual_line =line.unwrap();
             let parts: Vec<&str> = actual_line.split_whitespace().collect();
-            let command = match parse_command(&parts) {
-            Ok(command) => command,
-            Err(ParseError::UnknownCommand) => {
-            println!("Unknown command. Type HELP for available commands.");
-            continue;
-    }
-    
-
-            Err(ParseError::InvalidArguments) => {
-            println!("Invalid arguments.");
-            continue;
-        }
+            match parse_command(&parts) {
+            Ok(command) => {apply_command(store, &command);}
+            Err(_) => {print!("Garbage");
+                        continue;                }
     };
-            apply_command(store, &command);
+            
 
         }
 
