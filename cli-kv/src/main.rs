@@ -211,7 +211,7 @@ fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
             if parts.len() !=3{
                 return Err(ParseError::InvalidArguments)
             }
-            let s = parts[2..].join(",");
+            let s = parts[2..].join(" ");
             Ok(Command::Set(parts[1].to_string(),s.to_string()))
         }
 
