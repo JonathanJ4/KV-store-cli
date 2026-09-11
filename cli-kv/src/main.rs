@@ -75,7 +75,7 @@ fn main() {
     let mut store= Store::new();
 
     
-    load_log(&mut store);
+    load_log(&mut store,"store.log");
 
 
     let mut file = OpenOptions::new()
@@ -150,8 +150,8 @@ fn print_help() {
 loaded back into the hashmap and also checks for garbage
 
 */
-fn load_log(store: &mut Store){
-    let file1 = match File::open("store.log"){
+fn load_log(store: &mut Store, path: &str){
+    let file1 = match File::open(path){
   
     Ok(file1) =>file1,
     Err(error) =>{
