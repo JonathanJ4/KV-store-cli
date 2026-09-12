@@ -178,7 +178,7 @@ fn load_log(store: &mut Store, path: &str){
             let c = match actual_line.split_once("|"){
                 Some((first,second)) => (first,second),
                 None => {
-                    print!("Error");
+                    println!("Error_caught");
                     continue;
                 }
 
@@ -332,15 +332,17 @@ match command {
 
             Command::Clear => {
                 store.clear();
-                writeln!(file,"Clear").unwrap();
+                writeln!(file,"Clear|{}",checksum("Clear")).unwrap();
                 println!("OK");
                 true
             }
 
             Command::Delete(key) => {
                 match store.delete(&key) {
-                Some(_) => {writeln!(file,"Delete {}", key).unwrap();
-                            println!("Ok removed");}
+                Some(_) => {
+                let input = format!("Delete {}", key);
+                writeln!(file,"{}|{}", input, checksum(&input)).unwrap();
+                println!("Ok removed");}
                 None => println!("Key does not exist"),
                 }
                 
@@ -416,7 +418,7 @@ mod tests {
     writeln!(file, "{}|{}", record, sum).unwrap();
     
     let record2 = "SET greeting Hello World";
-    let sum2 = checksum(record);
+    let sum2 = checksum(record2);
 
     writeln!(file, "{}|{}", record2, sum2).unwrap();
     
