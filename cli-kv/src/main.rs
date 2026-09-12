@@ -121,7 +121,7 @@ fn main() {
                 continue;
             }
     };
-        compact_log(&store, "store.log");
+        
         
         if !handle_commands(&mut store,command,&mut file ){
             break;
@@ -132,6 +132,8 @@ fn main() {
         
 
     }
+    drop(file);
+    compact_log(&store, "store.log");
 }
 
 fn print_help() {
