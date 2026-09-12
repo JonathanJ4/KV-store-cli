@@ -121,7 +121,7 @@ fn main() {
                 continue;
             }
     };
-
+        compact_log(&store, "store.log");
         
         if !handle_commands(&mut store,command,&mut file ){
             break;
@@ -374,6 +374,30 @@ fn checksum(data: &str) -> u32{
     return hasher.finalize();
     
 
+}
+
+fn compact_log(store: &Store, path: &str){
+    let temp_path = "temp.log";
+    let mut file = OpenOptions::new()
+            .create(true)
+            .append(true)
+            .truncate(true)
+            .open(temp_path)
+            .unwrap();
+
+    for (key,value) in &store.data{
+        let record = format!("SET {} {}",key,value);
+        let sum = checksum(&record);
+
+        writeln!(file,"{}|{}",record,sum).unwrap();
+
+
+
+
+    }
+    drop(file);
+
+    std::fs::rename(temp_path, path).unwrap();
 }
 
 
