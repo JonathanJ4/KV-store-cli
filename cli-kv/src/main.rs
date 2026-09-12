@@ -1,5 +1,6 @@
 use std::collections::HashMap;
-
+use std::hash::Hash;
+use crc32fast::Hasher;
 
 use std::fs::remove_file;
 use std::error;
@@ -173,13 +174,29 @@ fn load_log(store: &mut Store, path: &str){
             println!("Failed to read log entry");
             continue;
         }
-    };
-            let parts: Vec<&str> = actual_line.split_whitespace().collect();
+    };      
+            let c = match actual_line.split_once("|"){
+                Some((first,second)) => (first,second),
+                None => {
+                    print!("Error");
+                    continue;
+                }
+
+            };
+            if checksum(c.0) == c.1.parse::<u32>().unwrap(){
+
+            
+
+            let parts: Vec<&str> = c.0.split_whitespace().collect();
             match parse_command(&parts) {
             Ok(command) => {apply_command(store, &command);}
             Err(_) => {print!("Garbage_Command");
                         continue;                }
-    };
+            }
+    }       else {
+            println!("Mismatched checksum");
+            break;
+    }    
             
 
         }
@@ -208,7 +225,7 @@ fn parse_command(parts: &[&str]) -> Result<Command,ParseError>{
             Ok(Command::Get(parts[1].to_string()))
         }
         "SET" => {
-            if parts.len() <2 {
+            if parts.len() <3 {
                 return Err(ParseError::InvalidArguments)
             }
             let s = parts[2..].join(" ");
@@ -284,7 +301,10 @@ fn handle_commands(store: &mut Store, command: Command, file: &mut File) -> bool
 match command {
             Command::Set(key, value) => {
                 store.set(&key, &value);
-                writeln!(file,"SET {} {}", key, value).unwrap();
+                let record = format!("Set {} {}", key, value);
+                let sum1 = checksum(&record);
+
+                writeln!(file,"{}|{}",record,sum1).unwrap();
                 println!("OK");
                 true
             }
@@ -338,6 +358,14 @@ match command {
             }
         }
     }
+
+fn checksum(data: &str) -> u32{
+    let mut hasher = Hasher::new();
+    hasher.update(data.as_bytes());
+    return hasher.finalize();
+    
+
+}
 
 
 #[cfg(test)]
