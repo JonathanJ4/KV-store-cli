@@ -410,9 +410,16 @@ mod tests {
     .truncate(true)
     .open("test.log")
     .unwrap();
+    let record = "SET language Rust";
+    let sum = checksum(record);
 
-    writeln!(file, "SET language Rust").unwrap();
-    writeln!(file, "SET greeting Hello World").unwrap();
+    writeln!(file, "{}|{}", record, sum).unwrap();
+    
+    let record2 = "SET greeting Hello World";
+    let sum2 = checksum(record);
+
+    writeln!(file, "{}|{}", record2, sum2).unwrap();
+    
     drop(file);
 
 
