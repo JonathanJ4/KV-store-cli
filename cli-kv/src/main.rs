@@ -183,8 +183,18 @@ fn load_log(store: &mut Store, path: &str){
                 }
 
             };
-            if checksum(c.0) == c.1.parse::<u32>().unwrap(){
-
+          
+            let saved_checksum = match c.1.parse::<u32>() {
+            Ok(number) => number,
+            Err(_) => {
+                println!("Invalid checksum");
+                break;
+            }
+        };
+            if checksum(c.0) != saved_checksum {
+                println!("Checksum mismatch");
+                break;
+            }
             
 
             let parts: Vec<&str> = c.0.split_whitespace().collect();
@@ -193,10 +203,7 @@ fn load_log(store: &mut Store, path: &str){
             Err(_) => {print!("Garbage_Command");
                         continue;                }
             }
-    }       else {
-            println!("Mismatched checksum");
-            break;
-    }    
+             
             
 
         }
