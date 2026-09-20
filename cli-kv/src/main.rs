@@ -70,7 +70,7 @@ impl Store{
 
 fn main() {
 
-    let listener = TcpListener::bind("127.0.0.1:7878");
+    let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
     println!("Server Listening on Port 7878");
     println!("Simple Rust KV Store CLI");
     println!("Type EXIT to close the program");
@@ -92,15 +92,18 @@ fn main() {
 
     for stream in listener.incoming() {
         // handle connection
-    match stream{
+    let s = match stream{
         Ok(stream) => {
             println!("Connected Successfully");
+            stream;
         }
         Err(_) => {
             println!("F dint work");
+            continue;
+  
         }
-    }
-
+    
+    };
 
 
     loop {
@@ -152,7 +155,8 @@ fn main() {
     }
     drop(file);
     compact_log(&store, "store.log");
-}
+
+    }
 }
 
 fn print_help() {
