@@ -5,10 +5,11 @@ use crc32fast::Hasher;
 use std::fs::remove_file;
 use std::error;
 use std::fs::OpenOptions;
+use std::net::TcpListener;
 
 use std::fs::File;
 use std::io::ErrorKind::NotFound;
-use std::io::{self, Write, BufRead, BufReader};
+use std::io::{self, Read, Write, BufRead, BufReader};
 
 
 enum Command{
@@ -68,6 +69,9 @@ impl Store{
 
 
 fn main() {
+
+    let listener = TcpListener::bind("127.0.0.1:7878");
+    println!("Server Listening on Port 7878");
     println!("Simple Rust KV Store CLI");
     println!("Type EXIT to close the program");
     
@@ -85,6 +89,10 @@ fn main() {
             .open("store.log")
             .unwrap();
 
+
+    for stream in listener.incoming() {
+        // handle connection
+    
     loop {
 
 
@@ -134,6 +142,7 @@ fn main() {
     }
     drop(file);
     compact_log(&store, "store.log");
+}
 }
 
 fn print_help() {
@@ -382,8 +391,8 @@ fn compact_log(store: &Store, path: &str){
     let temp_path = "temp.log";
     let mut file = OpenOptions::new()
             .create(true)
-            .append(true)
-            .truncate(true)
+            .write(true)
+            .truncate(true) 
             .open(temp_path)
             .unwrap();
 
