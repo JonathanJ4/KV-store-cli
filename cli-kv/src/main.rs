@@ -92,7 +92,17 @@ fn main() {
 
     for stream in listener.incoming() {
         // handle connection
-    
+    match stream{
+        Ok(stream) => {
+            println!("Connected Successfully");
+        }
+        Err(_) => {
+            println!("F dint work");
+        }
+    }
+
+
+
     loop {
 
 
