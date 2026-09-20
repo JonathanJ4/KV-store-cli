@@ -95,7 +95,7 @@ fn main() {
     let s = match stream{
         Ok(stream) => {
             println!("Connected Successfully");
-            stream;
+            stream
         }
         Err(_) => {
             println!("F dint work");
@@ -104,6 +104,7 @@ fn main() {
         }
     
     };
+    let mut reader1 = BufReader::new(s);
 
 
     loop {
@@ -119,9 +120,7 @@ fn main() {
 
         let mut input = String::new();
 
-        io::stdin()
-        .read_line(&mut input)
-        .expect("Failed to read");
+        reader1.read_line(&mut input).unwrap();
         
         let input = input.trim();
 
