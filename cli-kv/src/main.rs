@@ -152,10 +152,11 @@ fn main() {
         
 
     }
-    drop(file);
-    compact_log(&store, "store.log");
+    
 
     }
+    drop(file);
+    compact_log(&store, "store.log");
 }
 
 fn print_help() {
